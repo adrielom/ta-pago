@@ -17,3 +17,5 @@ export default {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const palette = {"Peach Yellow":"fcde9c","Sandy brown":"ffa552","Burnt orange":"ba5624","Dark purple":"381d2a","Tea green":"c4d6b0"}
