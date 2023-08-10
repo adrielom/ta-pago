@@ -1,10 +1,10 @@
-interface WorkoutSet {
+export interface WorkoutSet {
     title: string,
     urlImage?: string,
     exercises: Array<Workout>
 }
 
-interface Workout {
+export interface Workout {
     name: string,
     sets: number,
     execution: {
@@ -16,11 +16,11 @@ interface Workout {
     desc?: string
 }
 
-interface User {
+export interface User {
     name: string,
 }
 
-interface Data {
+export interface Data {
     user: User,
     sets: WorkoutSet[]
 }

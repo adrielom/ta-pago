@@ -3,30 +3,24 @@ import React from 'react';
 import { Stack } from 'expo-router';
 import { Link } from 'expo-router';
 import { palette } from '../constants/Colors';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import WorkoutSetProvider from '../src/contexts/workoutSetContext';
+
+const defaultOptions: NativeStackNavigationOptions = {
+	headerStyle: { backgroundColor: `${palette.tomato.default}` },
+	headerTintColor: '#fff',
+	headerTitleStyle: {
+		fontWeight: 'bold',
+	},
+};
 
 export default function StackLayout() {
 	return (
-		<Stack>
-			<Stack.Screen
-				name='workouts'
-				options={{
-					headerStyle: { backgroundColor: palette['Burnt orange'] },
-					headerTintColor: '#fff',
-					headerTitleStyle: {
-						fontWeight: 'bold',
-					},
-				}}
-			/>
-			<Stack.Screen
-				name='index'
-				options={{
-					headerStyle: { backgroundColor: palette['Burnt orange'] },
-					headerTintColor: '#fff',
-					headerTitleStyle: {
-						fontWeight: 'bold',
-					},
-				}}
-			/>
-		</Stack>
+		<WorkoutSetProvider>
+			<Stack>
+				<Stack.Screen name='workouts' options={defaultOptions} />
+				<Stack.Screen name='index' options={defaultOptions} />
+			</Stack>
+		</WorkoutSetProvider>
 	);
 }
