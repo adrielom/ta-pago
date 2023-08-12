@@ -24,16 +24,16 @@ export default function App() {
 				<FlatList<WorkoutSet>
 					data={data.sets}
 					style={{
-						marginHorizontal: 15,
+						marginHorizontal: 5,
 						maxHeight: '85%',
 					}}
 					numColumns={2}
 					horizontal={false}
-					contentContainerStyle={{ gap: 5 }}
+					contentContainerStyle={{ gap: 8 }}
 					columnWrapperStyle={{ gap: 15 }}
 					ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
 					renderItem={({ item }) => (
-						<WorkoutCard key={uuid()} title={item.title} />
+						<WorkoutCard key={uuid()} title={item.title} id={item.id} />
 					)}
 				/>
 			</View>

@@ -1,10 +1,14 @@
 export interface WorkoutSet {
+    id: number,
     title: string,
     urlImage?: string,
-    exercises: Array<Workout>
+    exercises: Array<Workout>,
+    isComplete: boolean
 }
 
 export interface Workout {
+    id: number,
+    isComplete: boolean,
     name: string,
     sets: number,
     execution: {
@@ -18,6 +22,7 @@ export interface Workout {
 
 export interface User {
     name: string,
+    id: number
 }
 
 export interface Data {

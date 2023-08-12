@@ -1,27 +1,25 @@
 import { View } from 'react-native';
 import React from 'react';
-import { WorkoutCardProps } from './types';
+import { WorkoutCardDTO, WorkoutCardProps } from './types';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { Link } from 'expo-router';
+import { styles } from './styles';
 
-const WorkoutCard = ({ imgUrl, title }: WorkoutCardProps) => {
+const WorkoutCard = ({ imgUrl, id, title }: WorkoutCardProps) => {
 	return (
-		<Link href={'/workoutPage'}>
-			<Card style={{ maxHeight: 250 }}>
+		<Link
+			style={styles.link}
+			href={{
+				pathname: '/workoutPage/',
+				params: { title: title, id: id } as WorkoutCardDTO,
+			}}>
+			<Card elevation={3} style={styles.card}>
 				<Card.Cover
-					style={{ borderRadius: 5, maxHeight: 180 }}
+					style={styles.cardCover}
 					source={{ uri: imgUrl || 'https://picsum.photos/700' }}
 				/>
 				<Card.Content>
-					<Text
-						style={{
-							width: '100%',
-							height: '100%',
-							textAlign: 'center',
-							marginTop: 10,
-							fontWeight: 'bold',
-						}}
-						variant='titleLarge'>
+					<Text style={styles.cardContent} variant='titleLarge'>
 						{title}
 					</Text>
 				</Card.Content>
