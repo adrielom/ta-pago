@@ -19,7 +19,7 @@ export default function App() {
 						marginVertical: 20,
 						fontSize: 20,
 					}}>
-					O que vamos treinar hoje?
+					Bora pagar o que hoje?
 				</Text>
 				<FlatList<WorkoutSet>
 					data={data.sets}

@@ -1,5 +1,14 @@
 import { StyleSheet } from 'react-native';
 
+export const paramsStyles = (width: number) => StyleSheet.create({
+    progress: {
+        width: width,
+        height: 8,
+        marginRight: 10,
+        borderRadius: 10,
+    }
+})
+
 export const styles = StyleSheet.create({
     wrapper: {
         flex: 1
@@ -11,6 +20,8 @@ export const styles = StyleSheet.create({
     },
     progressBarContainer: {
         flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center'
     },
     emoji: {
         marginHorizontal: 10
@@ -28,7 +39,7 @@ export const styles = StyleSheet.create({
     },
     progressBar: {
         height: 8,
-        width: '100%',
+        width: 50,
         borderRadius: 10
     },
     headerText: {
