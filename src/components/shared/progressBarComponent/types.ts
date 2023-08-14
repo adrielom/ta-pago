@@ -5,5 +5,6 @@ export type ProgressBarComponentProps = {
 	color?: string;
 	showButtons?: boolean,
 	onComplete: () => void,
-	width?: number
+	width?: number,
+	inicialValue: number
 } & ViewProps;

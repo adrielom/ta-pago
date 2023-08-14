@@ -33,7 +33,12 @@ export default function App() {
 					columnWrapperStyle={{ gap: 15 }}
 					ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
 					renderItem={({ item }) => (
-						<WorkoutCard key={uuid()} title={item.title} id={item.id} />
+						<WorkoutCard
+							imgUrl={item.urlImage}
+							key={uuid()}
+							title={item.title}
+							id={item.id}
+						/>
 					)}
 				/>
 			</View>

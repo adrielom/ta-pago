@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { ProgressBar, Text } from 'react-native-paper';
 import { palette } from '../../../../constants/Colors';
@@ -11,6 +11,7 @@ const size = Dimensions.get('window').width;
 
 export default function ProgressBarComponent({
 	total,
+	inicialValue,
 	color = palette.naplesYellow.default,
 	onComplete,
 	showButtons = true,
@@ -18,6 +19,11 @@ export default function ProgressBarComponent({
 	...rest
 }: ProgressBarComponentProps) {
 	const [progress, setProgress] = useState(0);
+	const { data } = useContext(WorkoutSetContext) || {};
+
+	useEffect(() => {
+		data && setProgress(inicialValue);
+	}, [data]);
 
 	return (
 		<View style={styles.progressBarWrapper} {...rest}>

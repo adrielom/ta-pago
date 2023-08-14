@@ -19,14 +19,43 @@ export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 
 	const repsTextFormatted = () => {
 		return `
-		${workout.sets} x ${
-			workout.execution.min ? workout.execution.min + ' -' : ''
-		} ${workout.execution.max}${
+		${workout.sets} x ${workout.execution.min + ' -' || ''} ${
+			workout.execution.max
+		}${
 			workout.execution.type === 'time'
 				? ' seconds'
 				: ' ' + workout.execution.type
+		}${workout.cargo ? '\n\t\t' + workout.cargo : ''}${
+			workout.desc ? '\n\t\t' + workout.desc : ''
 		}
 		`;
+	};
+
+	const setComplete = () => {
+		if (data && setData) {
+			const previousData = JSON.parse(JSON.stringify(data)) as WorkoutSet[];
+
+			const newWorkout = { ...workout };
+			newWorkout.isComplete = true;
+
+			previousData.map((e) => {
+				if (e.id === navigationInfo?.workoutSetSelectedID) {
+					const exData = e.exercises.map((ex) => {
+						if (ex.id === workout.id) {
+							return newWorkout;
+						}
+						return {
+							...ex,
+						};
+					});
+					e.exercises = exData;
+				}
+				return {
+					...e,
+				};
+			});
+			setData(previousData);
+		}
 	};
 
 	return (
@@ -40,10 +69,7 @@ export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 			</View>
 			<View>
 				{showPhoto && (
-					<Image
-						source={{ uri: 'https://github.com/adrielom.png' }}
-						style={styles.image}
-					/>
+					<Image source={{ uri: workout.urlImage }} style={styles.image} />
 				)}
 				<View style={styles.repsTextContainer}>
 					<Text style={styles.repsText}>{repsTextFormatted()}</Text>
@@ -51,33 +77,9 @@ export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 			</View>
 			<ProgressBarComponent
 				total={workout.sets}
+				inicialValue={workout.isComplete ? workout.sets : 0}
 				onComplete={() => {
-					if (data && setData) {
-						const previousData = JSON.parse(
-							JSON.stringify(data)
-						) as WorkoutSet[];
-
-						const newWorkout = { ...workout };
-						newWorkout.isComplete = true;
-
-						previousData.map((e) => {
-							if (e.id === navigationInfo?.workoutSetSelectedID) {
-								const exData = e.exercises.map((ex) => {
-									if (ex.id === workout.id) {
-										return newWorkout;
-									}
-									return {
-										...ex,
-									};
-								});
-								e.exercises = exData;
-							}
-							return {
-								...e,
-							};
-						});
-						setData(previousData);
-					}
+					setComplete();
 				}}
 			/>
 		</Surface>

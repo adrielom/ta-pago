@@ -8,6 +8,7 @@ export interface WorkoutSet {
 
 export interface Workout {
     id: number,
+    urlImage: string,
     isComplete: boolean,
     name: string,
     sets: number,
