@@ -44,9 +44,9 @@ const workoutPage = () => {
 		}
 	};
 
-	const storeData = async (key: string, value: number) => {
+	const storeData = async (key: string, value: string) => {
 		try {
-			await AsyncStorage.setItem(key, String(value));
+			await AsyncStorage.setItem(key, value);
 		} catch (error) {
 			console.log(error);
 		}
@@ -60,8 +60,6 @@ const workoutPage = () => {
 				setNavigationInfo({ workoutSetSelectedID: Number(id) });
 				setTotal(set.exercises.length);
 			}
-			console.log(progress, ' ', total);
-			console.log(JSON.stringify(data));
 		}
 	}, []);
 
@@ -120,7 +118,7 @@ const workoutPage = () => {
 						<RoundButton
 							iconName='check-bold'
 							onPress={() => {
-								storeData('lastDone', Number(id));
+								storeData('lastDone', JSON.stringify({ id: id }));
 								setTrainingProgressTo(true);
 							}}
 						/>

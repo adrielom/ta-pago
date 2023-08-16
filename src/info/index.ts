@@ -10,7 +10,7 @@ export const data = {
             id: 0,
             title: "A - Superiores",
             isComplete: false,
-            urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2021/04/iStock-1246046696.jpg',
+            urlImage: 'https://static.movimente.me/media/imgs/exercises/img_192.jpeg',
             exercises: [
                 {
                     id: 0,
@@ -105,13 +105,13 @@ export const data = {
             id: 1,
             title: "B - Costas e Ombro",
             isComplete: false,
-            urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2021/04/iStock-1246046696.jpg',
+            urlImage: 'https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/remada-articulada.jpg',
             exercises: [
                 {
                     id: 0,
                     isComplete: false,
                     name: "Remada articulada máquina",
-                    urlImage: 'https://static.movimente.me/media/imgs/exercises/img_192.jpeg',
+                    urlImage: 'https://www.hipertrofia.org/blog/wp-content/uploads/2019/05/remada-articulada.jpg',
                     execution: {
                         min: 8,
                         max: 12,
@@ -124,7 +124,7 @@ export const data = {
                     id: 1,
                     isComplete: false,
                     name: "Remada sentado",
-                    urlImage: 'https://i.ytimg.com/vi/ZfFYoFzSyRA/maxresdefault.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2021/09/remada-sentado-com-cabos-e-triangulo-para-costas.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -137,7 +137,7 @@ export const data = {
                     id: 2,
                     isComplete: false,
                     name: "Remada Cavalinho",
-                    urlImage: 'https://www.intowellness.in/wp-content/uploads/2019/12/Pec-Fly-Machine.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/costas-remada-em-pe-com-barra-T.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -149,7 +149,7 @@ export const data = {
                     id: 3,
                     isComplete: false,
                     name: "Puxada Frontal",
-                    urlImage: 'https://i.ytimg.com/vi/1N43ZJT7yiM/maxresdefault.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/costas-puxada-aberta-com-barra-no-pulley.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -160,7 +160,7 @@ export const data = {
                 {
                     id: 4,
                     isComplete: false,
-                    urlImage: 'https://blog.blackskullusa.com.br/wp-content/uploads/2021/12/rosca-direta-inclinada-interna.jpg',
+                    urlImage: 'https://i.pinimg.com/originals/74/68/5a/74685a8a1b44b902c9d3ac1404844e88.gif',
                     name: "Pulldown",
                     execution: {
                         min: 8,
@@ -173,7 +173,7 @@ export const data = {
                     id: 5,
                     isComplete: false,
                     name: "Abs nas Paralelas",
-                    urlImage: 'https://i.ytimg.com/vi/mfkfUkj24co/maxresdefault.jpg',
+                    urlImage: 'https://media.tenor.com/DS2odwIdTHcAAAAM/abdominal-workout-knee.gif',
                     execution: {
                         min: 15,
                         max: 20,
@@ -185,7 +185,7 @@ export const data = {
                     id: 6,
                     isComplete: false,
                     name: "Abs supra curto",
-                    urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2022/09/prancha-exercicio.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2021/04/abdominal.gif',
                     execution: {
                         min: 15,
                         max: 20,
@@ -199,13 +199,13 @@ export const data = {
             id: 2,
             title: "C - Leg Day",
             isComplete: false,
-            urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2021/04/iStock-1246046696.jpg',
+            urlImage: 'https://boaforma.abril.com.br/wp-content/uploads/sites/2/2023/04/cadeira-flexora.jpg?quality=90&strip=info',
             exercises: [
                 {
                     id: 0,
                     isComplete: false,
                     name: "Cadeira Flexora",
-                    urlImage: 'https://static.movimente.me/media/imgs/exercises/img_192.jpeg',
+                    urlImage: 'https://cdn.fisiculturismo.com.br/monthly_2017_03/cadeira-flexora-animacao.gif.90e391e83229726537404de3a3af9104.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -218,7 +218,7 @@ export const data = {
                     id: 1,
                     isComplete: false,
                     name: "Flexora Deitada",
-                    urlImage: 'https://i.ytimg.com/vi/ZfFYoFzSyRA/maxresdefault.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2021/04/pernas-flexao-de-pernas-na-maquina.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -231,7 +231,7 @@ export const data = {
                     id: 2,
                     isComplete: false,
                     name: "Stiff barra ou Anilha",
-                    urlImage: 'https://www.intowellness.in/wp-content/uploads/2019/12/Pec-Fly-Machine.jpg',
+                    urlImage: 'https://s.zst.com.br/cms-assets/2022/05/stiff-como-fazer.webp',
                     execution: {
                         min: 8,
                         max: 12,
@@ -244,7 +244,7 @@ export const data = {
                     id: 3,
                     isComplete: false,
                     name: "Cadeira Extensora",
-                    urlImage: 'https://i.ytimg.com/vi/1N43ZJT7yiM/maxresdefault.jpg',
+                    urlImage: 'https://cdn.fisiculturismo.com.br/monthly_2017_03/cadeira-extensora-animacao.gif.c205cc7aabd68be33a9686238eb54826.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -255,7 +255,7 @@ export const data = {
                 {
                     id: 4,
                     isComplete: false,
-                    urlImage: 'https://blog.blackskullusa.com.br/wp-content/uploads/2021/12/rosca-direta-inclinada-interna.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2021/09/agachamento-taca-goblet-com-harter.gif',
                     name: "Agachamento Anilha",
                     execution: {
                         min: 8,
@@ -268,7 +268,7 @@ export const data = {
                     id: 5,
                     isComplete: false,
                     name: "Leg Press 45º",
-                    urlImage: 'https://i.ytimg.com/vi/mfkfUkj24co/maxresdefault.jpg',
+                    urlImage: 'https://media.tenor.com/e0qeS17dv7QAAAAC/legpress45-leg-press.gif',
                     execution: {
                         min: 15,
                         max: 20,
@@ -281,7 +281,7 @@ export const data = {
                     id: 6,
                     isComplete: false,
                     name: "Afundo com Halteres",
-                    urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2022/09/prancha-exercicio.jpg',
+                    urlImage: 'https://cdn.fisiculturismo.com.br/monthly_2020_05/afundo-com-halter-animacao.gif.584f3c12e15e72cd6895460a20863049.gif',
                     execution: {
                         min: 15,
                         max: 20,
@@ -296,13 +296,13 @@ export const data = {
             id: 3,
             title: "D - Ombro e Tríceps",
             isComplete: false,
-            urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2021/04/iStock-1246046696.jpg',
+            urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/ombros-elevacao-lateral-de-ombros-com-halteres.gif',
             exercises: [
                 {
                     id: 0,
                     isComplete: false,
                     name: "Ombro Lateral Halteres",
-                    urlImage: 'https://static.movimente.me/media/imgs/exercises/img_192.jpeg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2020/12/ombros-elevacao-lateral-de-ombros-com-halteres.gif',
                     execution: {
                         min: 10,
                         max: 12,
@@ -314,7 +314,7 @@ export const data = {
                     id: 1,
                     isComplete: false,
                     name: "Ombro frontal Halteres",
-                    urlImage: 'https://i.ytimg.com/vi/ZfFYoFzSyRA/maxresdefault.jpg',
+                    urlImage: 'https://i.ytimg.com/vi/RUzWF4aDt7g/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCigEIjaOx6IHMfnvYSd_BDyzsrqQ',
                     execution: {
                         min: 8,
                         max: 12,
@@ -327,7 +327,7 @@ export const data = {
                     id: 2,
                     isComplete: false,
                     name: "Desenvolvimento halteres",
-                    urlImage: 'https://www.intowellness.in/wp-content/uploads/2019/12/Pec-Fly-Machine.jpg',
+                    urlImage: 'https://i.pinimg.com/originals/c6/01/50/c60150e82887c5f20f8659a2ec943c1a.gif',
                     execution: {
                         min: 10,
                         max: 12,
@@ -340,7 +340,7 @@ export const data = {
                     id: 3,
                     isComplete: false,
                     name: "Ombro lateral polia",
-                    urlImage: 'https://i.ytimg.com/vi/1N43ZJT7yiM/maxresdefault.jpg',
+                    urlImage: 'https://i.makeagif.com/media/11-19-2016/UTaLoY.gif',
                     execution: {
                         min: 8,
                         max: 12,
@@ -352,7 +352,7 @@ export const data = {
                 {
                     id: 4,
                     isComplete: false,
-                    urlImage: 'https://blog.blackskullusa.com.br/wp-content/uploads/2021/12/rosca-direta-inclinada-interna.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2021/07/triceps-puxada-no-pulley-com-corda.gif',
                     name: "Tríceps corda polia",
                     execution: {
                         min: 8,
@@ -365,7 +365,7 @@ export const data = {
                     id: 5,
                     isComplete: false,
                     name: "Tríceps francês polia",
-                    urlImage: 'https://i.ytimg.com/vi/mfkfUkj24co/maxresdefault.jpg',
+                    urlImage: 'https://www.mundoboaforma.com.br/wp-content/uploads/2021/07/triceps-no-pulley-atras-ca-cabeca.gif',
                     execution: {
                         min: 10,
                         max: 12,
@@ -378,7 +378,7 @@ export const data = {
                     id: 6,
                     isComplete: false,
                     name: "Tríceps testa polia",
-                    urlImage: 'https://blog.gsuplementos.com.br/wp-content/uploads/2022/09/prancha-exercicio.jpg',
+                    urlImage: 'https://cdn.fisiculturismo.com.br/monthly_2017_03/triceps-testa-na-polia-animacao.gif.8c2d0a3241e8a6156e46efcf3515b216.gif',
                     execution: {
                         max:8,
                         type: 'reps'

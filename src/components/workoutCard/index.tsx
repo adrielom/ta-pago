@@ -10,17 +10,19 @@ const WorkoutCard = ({ imgUrl, id, title }: WorkoutCardProps) => {
 	const [isLastDone, setIsLastDone] = useState(false);
 
 	useEffect(() => {
-		const cacheId = getData();
-		if (cacheId && id === Number(cacheId)) {
-			setIsLastDone(true);
-		}
+		getLocalStorageData((e: any) => {
+			console.log(e, id);
+			if (Number(e.id) === id) {
+				setIsLastDone(true);
+			}
+		});
 	}, []);
 
-	const getData = async () => {
+	const getLocalStorageData = async (callback: Function) => {
 		try {
 			const value = await AsyncStorage.getItem('lastDone');
 			if (value !== null) {
-				return value;
+				callback(JSON.parse(value));
 			}
 		} catch (e) {
 			// error reading value
@@ -53,7 +55,7 @@ const WorkoutCard = ({ imgUrl, id, title }: WorkoutCardProps) => {
 					style={styles.cardCover}
 					source={{ uri: imgUrl || 'https://picsum.photos/700' }}
 				/>
-				<Card.Content>
+				<Card.Content style={{ zIndex: 10 }}>
 					<Text style={styles.cardContent} variant='titleLarge'>
 						{title}
 					</Text>

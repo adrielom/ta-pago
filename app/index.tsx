@@ -24,13 +24,9 @@ export default function App() {
 				<FlatList<WorkoutSet>
 					data={data.sets}
 					style={{
-						marginHorizontal: 5,
-						maxHeight: '85%',
+						maxHeight: '90%',
 					}}
-					numColumns={2}
 					horizontal={false}
-					contentContainerStyle={{ gap: 8 }}
-					columnWrapperStyle={{ gap: 15 }}
 					ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
 					renderItem={({ item }) => (
 						<WorkoutCard
