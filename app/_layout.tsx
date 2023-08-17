@@ -24,6 +24,7 @@ export default function StackLayout() {
 					<Stack>
 						<Stack.Screen name='workoutPage/index' options={defaultOptions} />
 						<Stack.Screen name='index' options={defaultOptions} />
+						<Stack.Screen name='home' options={defaultOptions} />
 					</Stack>
 				</NavigationProvider>
 			</WorkoutSetProvider>
