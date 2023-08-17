@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "632287733347",
+    "project_id": "ta-pago-4a582",
+    "storage_bucket": "ta-pago-4a582.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632287733347:android:fac04106972f7797f8fa56",
+        "android_client_info": {
+          "package_name": "com.adrielom.tapago"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632287733347-es17e8m6hdrd9meqb1elavl2756p9lt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUuRWxHAK6T3LiuqxlzjhK8J-DXV_pk_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632287733347-es17e8m6hdrd9meqb1elavl2756p9lt4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
