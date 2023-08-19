@@ -1,17 +1,83 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import React from 'react';
-import { Link, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import {
+	FlatList,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 
-import { data } from '../src/info';
-import WorkoutCard from '../src/components/workoutCard';
-import { v4 as uuid } from 'uuid';
+import { Feather } from '@expo/vector-icons';
 import 'react-native-get-random-values';
+import { Menu } from 'react-native-paper';
+import { v4 as uuid } from 'uuid';
+import WorkoutCard from '../src/components/workoutCard';
+import { data } from '../src/info';
 import { WorkoutSet } from '../src/info/types';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 export default function App() {
+	const [toggleMoreButton, setToggleMoreButton] = useState(false);
+	const [workoutSets, setWorkoutSets] = useState<WorkoutSet[]>([]);
+
+	useEffect(() => {
+		let sets_ids: any = {};
+		const getAllSets = firestore()
+			.collection('user_workout_sets')
+			.where('isActive', '==', true)
+			.get();
+		const getAllWorkouts = firestore().collection('workout_sets').get();
+
+		Promise.all([getAllSets, getAllWorkouts]).then((response) => {
+			response[0].docs.forEach((e) => {
+				const setsIds: string[] = e.get('sets');
+				if (setsIds !== null) {
+					const tempSets = setsIds.map((_id) => {
+						const set = response[1].docs.find((doc) => doc.id === _id);
+						return {
+							id: _id,
+							...set?.data(),
+						} as WorkoutSet;
+					});
+					setWorkoutSets(tempSets);
+				}
+			});
+		});
+	}, []);
+
 	return (
 		<View style={styles.centerEverything}>
-			<Stack.Screen options={{ title: `Bem vindo(a), ${data.user.name}` }} />
+			<Stack.Screen
+				options={{
+					title: `Bem vindo(a), ${data.user.name}`,
+					headerShown: true,
+					headerRight: () => (
+						<>
+							<Menu
+								anchor={
+									<TouchableOpacity
+										onPress={() => setToggleMoreButton((prev) => !prev)}>
+										<Feather size={20} color={'white'} name='more-vertical' />
+									</TouchableOpacity>
+								}
+								onDismiss={() => setToggleMoreButton(false)}
+								visible={toggleMoreButton}>
+								<Menu.Item
+									onPress={() => {
+										setToggleMoreButton(false);
+										auth()
+											.signOut()
+											.then(() => setToggleMoreButton(false));
+									}}
+									title='Sair'
+								/>
+							</Menu>
+						</>
+					),
+				}}
+			/>
 			<View style={styles.content}>
 				<Text
 					style={{
@@ -22,19 +88,21 @@ export default function App() {
 					Bora pagar o que hoje?
 				</Text>
 				<FlatList<WorkoutSet>
-					data={data.sets}
+					data={workoutSets}
 					style={{
 						maxHeight: '90%',
 					}}
 					horizontal={false}
 					ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
 					renderItem={({ item }) => (
-						<WorkoutCard
-							imgUrl={item.urlImage}
-							key={uuid()}
-							title={item.title}
-							id={item.id}
-						/>
+						<>
+							<WorkoutCard
+								imgUrl={item.urlImage}
+								key={uuid()}
+								title={item.title}
+								id={item.id}
+							/>
+						</>
 					)}
 				/>
 			</View>
