@@ -1,9 +1,11 @@
-import { View, Text, Image, Alert } from 'react-native';
 import React, { useState } from 'react';
-import { Button, TextInput } from 'react-native-paper';
+import { Alert, Image, Text, View } from 'react-native';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
 
 import auth from '@react-native-firebase/auth';
-import { Link, router } from 'expo-router';
+import { Stack } from 'expo-router';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { palette } from '../constants/Colors';
 
 type LoginDataProps = {
 	email: string;
@@ -16,58 +18,88 @@ export default function Login() {
 		password: '',
 	});
 
+	const [isLoading, setIsLoading] = useState(false);
+
 	function handleLoginClick() {
+		if (loginData.email === '' || loginData.password === '') {
+			Alert.alert(
+				'Informações faltando',
+				'Parece que você não preencheu algum campo'
+			);
+			return;
+		}
+		setIsLoading(true);
 		auth()
 			.signInWithEmailAndPassword(loginData.email, loginData.password)
 			.then((res) => {
 				console.log(res);
-				router.push('/home');
-				Alert.alert('deu bom');
 			})
 			.catch((err) => {
 				console.log(err);
-				Alert.alert('deu ruim');
+				Alert.alert('Problema com email e senha');
 			})
-			.finally(() => {});
+			.finally(() => setIsLoading(false));
 	}
 
 	return (
-		<View style={{ justifyContent: 'center' }}>
-			<Image
-				style={{ width: 10, height: 10 }}
-				source={{ uri: 'https://github.com/adrielom.png' }}
-			/>
-			<View style={{ width: '80%' }}>
-				<TextInput
-					label='Email'
-					mode='outlined'
-					keyboardType='email-address'
-					onChangeText={(text) =>
-						setLoginData((prev) => {
-							return {
-								email: text,
-								password: prev.password,
-							};
-						})
-					}
+		<>
+			<Stack.Screen options={{ headerShown: false }} />
+			<View
+				style={{
+					justifyContent: 'space-around',
+					alignItems: 'center',
+					flex: 1,
+				}}>
+				<Image
+					style={{ width: 250, height: 250 }}
+					source={{ uri: 'https://github.com/adrielom.png' }}
 				/>
-				<TextInput
-					label='Senha'
-					mode='outlined'
-					secureTextEntry
-					onChangeText={(text) =>
-						setLoginData((prev) => {
-							return {
-								email: prev.email,
-								password: text,
-							};
-						})
-					}
-				/>
-				<Button onPress={handleLoginClick}>
-					<Text>Login</Text>
-				</Button>
+				<View style={{ width: '80%', gap: 25 }}>
+					<TextInput
+						label='Email'
+						mode='outlined'
+						keyboardType='email-address'
+						onChangeText={(text) =>
+							setLoginData((prev) => {
+								return {
+									email: text,
+									password: prev.password,
+								};
+							})
+						}
+					/>
+					<TextInput
+						label='Senha'
+						mode='outlined'
+						secureTextEntry
+						onChangeText={(text) =>
+							setLoginData((prev) => {
+								return {
+									email: prev.email,
+									password: text,
+								};
+							})
+						}
+					/>
+					<TouchableOpacity
+						onPress={handleLoginClick}
+						style={{
+							width: '100%',
+							backgroundColor: palette.naplesYellow.default,
+							height: 45,
+							marginTop: 10,
+							justifyContent: 'center',
+							alignItems: 'center',
+							borderRadius: 50,
+						}}>
+						{isLoading ? (
+							<ActivityIndicator color='white' animating={true} />
+						) : (
+							<Text style={{ fontWeight: 'bold', color: 'white' }}>Login</Text>
+						)}
+					</TouchableOpacity>
+				</View>
 			</View>
-		</View>
+		</>
 	);
 }

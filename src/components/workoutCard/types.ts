@@ -1,10 +1,10 @@
 export type WorkoutCardProps = {
     imgUrl?: string,
     title: string;
-    id: number
+    id: string
 }
 
 export type WorkoutCardDTO  = {
     title: string,
-    id: number
+    id: string
 }

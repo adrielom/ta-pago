@@ -12,7 +12,7 @@ const WorkoutCard = ({ imgUrl, id, title }: WorkoutCardProps) => {
 	useEffect(() => {
 		getLocalStorageData((e: any) => {
 			console.log(e, id);
-			if (Number(e.id) === id) {
+			if (e.id === id) {
 				setIsLastDone(true);
 			}
 		});

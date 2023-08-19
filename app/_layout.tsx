@@ -1,12 +1,10 @@
-import { View, Text } from 'react-native';
-import React from 'react';
-import { Stack } from 'expo-router';
-import { Link } from 'expo-router';
-import { palette } from '../constants/Colors';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import WorkoutSetProvider from '../src/contexts/workoutSetContext';
+import { Stack } from 'expo-router';
+import React from 'react';
 import { PaperProvider } from 'react-native-paper';
+import { palette } from '../constants/Colors';
 import NavigationProvider from '../src/contexts/navigationContext';
+import WorkoutSetProvider from '../src/contexts/workoutSetContext';
 
 const defaultOptions: NativeStackNavigationOptions = {
 	headerStyle: { backgroundColor: `${palette.tomato.default}` },
