@@ -23,7 +23,6 @@ export default function App() {
 	const [workoutSets, setWorkoutSets] = useState<WorkoutSet[]>([]);
 
 	useEffect(() => {
-		let sets_ids: any = {};
 		const getAllSets = firestore()
 			.collection('user_workout_sets')
 			.where('isActive', '==', true)
@@ -88,19 +87,23 @@ export default function App() {
 					Bora pagar o que hoje?
 				</Text>
 				<FlatList<WorkoutSet>
-					data={workoutSets}
+					data={workoutSets.sort((workoutA, workoutB) =>
+						workoutA.title > workoutB.title ? 1 : -1
+					)}
 					style={{
-						maxHeight: '90%',
+						maxHeight: '92%',
 					}}
 					horizontal={false}
 					ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
 					renderItem={({ item }) => (
 						<>
+							<Text></Text>
 							<WorkoutCard
 								imgUrl={item.urlImage}
 								key={uuid()}
 								title={item.title}
 								id={item.id}
+								exercises={item.exercises}
 							/>
 						</>
 					)}

@@ -2,7 +2,7 @@ export interface WorkoutSet {
     id: string,
     title: string,
     urlImage?: string,
-    exercises: Array<Workout>,
+    exercises: Array<string>,
     isComplete: boolean
 }
 

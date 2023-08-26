@@ -13,15 +13,14 @@ type ExerciseSetItemProps = {
 
 export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 	const [showPhoto, setShowPhoto] = useState(false);
-	const { data, setData } = useContext(WorkoutSetContext) || {};
 	const { navigationInfo, setNavigationInfo } =
 		useContext(NavigationContext) || {};
 
 	const repsTextFormatted = () => {
 		return `
-		${workout.sets} x ${workout.execution.min + ' -' || ''} ${
-			workout.execution.max
-		}${
+		${workout.sets} x ${
+			workout.execution.min ? workout.execution.min + ' -' : ''
+		} ${workout.execution.max}${
 			workout.execution.type === 'time'
 				? ' seconds'
 				: ' ' + workout.execution.type
@@ -31,32 +30,7 @@ export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 		`;
 	};
 
-	const setComplete = () => {
-		if (data && setData) {
-			const previousData = JSON.parse(JSON.stringify(data)) as WorkoutSet[];
-
-			const newWorkout = { ...workout };
-			newWorkout.isComplete = true;
-
-			previousData.map((e) => {
-				if (e.id === navigationInfo?.workoutSetSelectedID) {
-					const exData = e.exercises.map((ex) => {
-						if (ex.id === workout.id) {
-							return newWorkout;
-						}
-						return {
-							...ex,
-						};
-					});
-					e.exercises = exData;
-				}
-				return {
-					...e,
-				};
-			});
-			setData(previousData);
-		}
-	};
+	const setComplete = () => {};
 
 	return (
 		<Surface style={styles.surface}>

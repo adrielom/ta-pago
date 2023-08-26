@@ -6,12 +6,11 @@ import { Link } from 'expo-router';
 import { styles } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WorkoutCard = ({ imgUrl, id, title }: WorkoutCardProps) => {
+const WorkoutCard = ({ imgUrl, id, title, exercises }: WorkoutCardProps) => {
 	const [isLastDone, setIsLastDone] = useState(false);
 
 	useEffect(() => {
 		getLocalStorageData((e: any) => {
-			console.log(e, id);
 			if (e.id === id) {
 				setIsLastDone(true);
 			}
@@ -34,7 +33,11 @@ const WorkoutCard = ({ imgUrl, id, title }: WorkoutCardProps) => {
 			style={styles.link}
 			href={{
 				pathname: '/workoutPage/',
-				params: { title: title, id: id } as WorkoutCardDTO,
+				params: {
+					title: title,
+					id: id,
+					exercisesID: JSON.stringify(exercises),
+				} as WorkoutCardDTO,
 			}}>
 			<Card elevation={3} style={styles.card}>
 				{isLastDone && (

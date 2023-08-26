@@ -35,7 +35,8 @@ export const styles = StyleSheet.create({
     },
     headerTop: {
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        marginTop: 10,
+        justifyContent: 'space-between'
     },
     progressBar: {
         height: 8,

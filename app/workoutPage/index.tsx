@@ -1,33 +1,35 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
-import { Divider, ProgressBar, Surface } from 'react-native-paper';
+import {
+	ActivityIndicator,
+	Divider,
+	ProgressBar,
+	Surface,
+} from 'react-native-paper';
 import ExerciseSetItem from '../../src/components/ExerciseSetItem';
 import RoundButton from '../../src/components/shared/roundButton';
-import { NavigationContext } from '../../src/contexts/navigationContext';
-import { WorkoutSetContext } from '../../src/contexts/workoutSetContext';
-import { Workout, WorkoutSet } from '../../src/info/types';
+import { Workout } from '../../src/info/types';
+import { initialState, workoutPageReducer } from './reducer';
 import { paramsStyles, styles } from './styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { WorkoutReducerSchema } from './types';
 
 const workoutPage = () => {
-	const { data, setData } = useContext(WorkoutSetContext) || {};
-	const { navigationInfo, setNavigationInfo } =
-		useContext(NavigationContext) || {};
-
-	const [exercises, setExercises] = useState<Workout[]>([]);
-	const [total, setTotal] = useState(100);
-	const [progress, setProgress] = useState(0);
-
 	const params = useLocalSearchParams();
-	const { title, id } = params;
+	const { title, id, exercisesID } = params;
+	const [state, dispatch] = useReducer(workoutPageReducer, initialState);
+	const { exercises, progress, isPlayOn } = state;
 
 	const formattedProgress = () => {
-		return Math.ceil((progress / total) * 100);
+		return exercises.length > 0
+			? Math.ceil((progress / exercises.length) * 100)
+			: 0;
 	};
 
 	const renderEmoji = () => {
-		const prog = Math.ceil((progress / total) * 100);
+		const prog = Math.ceil((progress / exercises.length) * 100);
 		switch (true) {
 			case prog >= 0 && prog <= 24:
 				return <Text>😒</Text>;
@@ -53,40 +55,42 @@ const workoutPage = () => {
 	};
 
 	useEffect(() => {
-		if (data && params && setNavigationInfo) {
-			const set = data.find((ex) => ex.id === Number(id));
-			if (set) {
-				setExercises(set.exercises);
-				setNavigationInfo({ workoutSetSelectedID: Number(id) });
-				setTotal(set.exercises.length);
-			}
+		if (params) {
+			const exercisesIds: string[] = JSON.parse(exercisesID.toString());
+
+			let execs: any[] = [];
+			exercisesIds.forEach((id) => {
+				firestore()
+					.collection('workouts')
+					.doc(id)
+					.get()
+					.then((e) => {
+						const data = e.data();
+						execs.push(data);
+					})
+					.finally(() => {
+						dispatch({
+							type: 'saveExercises',
+							payload: {
+								...state,
+								exercises: execs,
+							} as WorkoutReducerSchema,
+						});
+					});
+			});
 		}
 	}, []);
 
-	useEffect(() => {
-		if (data) {
-			const workout = data.find((el) => el.id === Number(id));
-			const allComplete = workout?.exercises.filter(
-				(el) => el.isComplete === true
-			);
-			if (allComplete && allComplete?.length > 0) {
-				setProgress(allComplete.length);
-			}
-		}
-	}, [data]);
-
 	const setTrainingProgressTo = (condition: boolean) => {
-		if (data && setData) {
-			const previousData = JSON.parse(JSON.stringify(data)) as WorkoutSet[];
-
-			previousData
-				.find((el) => el.id === Number(id))
-				?.exercises.forEach((ex) => {
-					ex.isComplete = condition;
-				});
-			setData(previousData);
-			const set = data.find((ex) => ex.id === Number(id));
-			set && setExercises(set?.exercises);
+		if (exercises) {
+			const previousData = JSON.parse(JSON.stringify(exercises)) as Workout[];
+			previousData.forEach((ex) => {
+				ex.isComplete = condition;
+			});
+			dispatch({
+				type: 'saveExercises',
+				payload: { ...state, exercises: previousData },
+			});
 		}
 	};
 
@@ -95,14 +99,17 @@ const workoutPage = () => {
 			<Stack.Screen options={{ title: String(title) }} />
 			<View style={styles.container}>
 				<Surface style={styles.header}>
-					<Text style={styles.headerText}>Progresso do Treino</Text>
-					<View style={styles.progressBarContainer}>
+					<View
+						style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+						<Text style={styles.headerText}>Progresso do Treino</Text>
 						<Text style={styles.emoji}>{renderEmoji()}</Text>
+					</View>
+					<View style={styles.progressBarContainer}>
 						<ProgressBar
 							visible={true}
-							progress={progress / total}
+							progress={exercises.length > 0 ? progress / exercises.length : 0}
 							style={
-								paramsStyles(Dimensions.get('window').width - 140).progress
+								paramsStyles(Dimensions.get('window').width - 100).progress
 							}
 						/>
 						<Text>{formattedProgress()}%</Text>
@@ -112,9 +119,37 @@ const workoutPage = () => {
 							iconName='refresh'
 							onPress={() => {
 								setTrainingProgressTo(false);
-								setProgress(0);
+								dispatch({
+									type: 'saveProgress',
+									payload: { ...state, progress: 0 },
+								});
 							}}
 						/>
+						{!isPlayOn ? (
+							<RoundButton
+								iconName='play'
+								onPress={() => {
+									dispatch({
+										type: 'setIsPlayingOn',
+										payload: { ...state, isPlayOn: !isPlayOn },
+									});
+								}}
+							/>
+						) : (
+							<View
+								style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+								<RoundButton
+									iconName='pause'
+									onPress={() => {
+										dispatch({
+											type: 'setIsPlayingOn',
+											payload: { ...state, isPlayOn: !isPlayOn },
+										});
+									}}
+								/>
+								<Text>time</Text>
+							</View>
+						)}
 						<RoundButton
 							iconName='check-bold'
 							onPress={() => {
@@ -129,19 +164,23 @@ const workoutPage = () => {
 					style={{
 						marginTop: 5,
 					}}>
-					<FlatList<Workout>
-						data={exercises}
-						contentContainerStyle={{ paddingBottom: 500 }}
-						renderItem={({ item }) => (
-							<ExerciseSetItem
-								workout={
-									data
-										?.find((el) => el.id === Number(id))
-										?.exercises.find((ex) => ex.id === item.id) || item
-								}
-							/>
-						)}
-					/>
+					{exercises.length > 0 ? (
+						<FlatList<Workout>
+							data={exercises}
+							contentContainerStyle={{ paddingBottom: 500 }}
+							renderItem={({ item }) => <ExerciseSetItem workout={item} />}
+						/>
+					) : (
+						<View
+							style={{
+								flex: 1,
+								minHeight: 400,
+								justifyContent: 'center',
+								alignItems: 'center',
+							}}>
+							<ActivityIndicator size={'large'} />
+						</View>
+					)}
 				</View>
 			</View>
 		</>

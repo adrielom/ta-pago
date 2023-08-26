@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useState } from 'react';
 
 export type NavigationInfoProps = {
-	workoutSetSelectedID: number;
+	workoutSetSelectedID: string;
 };
 
 type NavigationContextProps = {
@@ -19,7 +19,7 @@ export const NavigationContext = createContext<NavigationContextProps | null>(
 
 const NavigationProvider = ({ children }: NavigationProviderProps) => {
 	const [navigationInfo, setNavigationInfo] = useState<NavigationInfoProps>({
-		workoutSetSelectedID: 0,
+		workoutSetSelectedID: '',
 	});
 
 	return (
