@@ -5,7 +5,6 @@ import { palette } from '../../../../constants/Colors';
 import RoundButton from '../roundButton';
 import { paramsStyle, styles } from './styles';
 import { ProgressBarComponentProps } from './types';
-import { WorkoutSetContext } from '../../../contexts/workoutSetContext';
 
 const size = Dimensions.get('window').width;
 
@@ -19,11 +18,6 @@ export default function ProgressBarComponent({
 	...rest
 }: ProgressBarComponentProps) {
 	const [progress, setProgress] = useState(0);
-	const { data } = useContext(WorkoutSetContext) || {};
-
-	useEffect(() => {
-		data && setProgress(inicialValue);
-	}, [data]);
 
 	return (
 		<View style={styles.progressBarWrapper} {...rest}>

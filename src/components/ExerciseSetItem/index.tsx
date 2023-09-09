@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Image, Text, View } from 'react-native';
-import { IconButton, Modal, Portal, Surface } from 'react-native-paper';
-import { Workout, WorkoutSet } from '../../info/types';
+import { IconButton, Surface } from 'react-native-paper';
+import { NavigationContext } from '../../contexts/navigationContext';
+import { Workout } from '../../info/types';
 import ProgressBarComponent from '../shared/progressBarComponent';
 import { styles } from './styles';
-import { WorkoutSetContext } from '../../contexts/workoutSetContext';
-import { NavigationContext } from '../../contexts/navigationContext';
 
 type ExerciseSetItemProps = {
 	workout: Workout;

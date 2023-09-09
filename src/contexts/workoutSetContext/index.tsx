@@ -1,27 +1,54 @@
 import { View, Text } from 'react-native';
-import React, { createContext, ReactNode, useState } from 'react';
-import { WorkoutSet } from '../../info/types';
+import React, { createContext, ReactNode, useReducer, useState } from 'react';
+import { Workout, WorkoutRecord, WorkoutSet } from '../../info/types';
 import { data as dados } from '../../info';
+import {
+	WorkoutReducerSchemaTypes,
+	initialState,
+	workoutPageReducer,
+} from '../../../app/workoutPage/reducer';
+import { WorkoutReducerSchema } from '../../../app/workoutPage/types';
 
-interface IWorkoutSetContext {
-	setData: (data: WorkoutSet[]) => void;
-	data: WorkoutSet[];
+interface IWorkoutRecordContext {
+	setWorkoutRecord: (data: WorkoutRecord) => void;
+	workoutRecord: WorkoutRecord | null;
+	exercises: Workout[];
+	progress: number;
+	dispatch: React.Dispatch<{
+		type: WorkoutReducerSchemaTypes;
+		payload: WorkoutReducerSchema;
+	}>;
+	isPlayOn: boolean;
 }
 
-interface WorkoutSetProviderProps {
+interface WorkoutRecordProviderProps {
 	children: ReactNode;
 }
 
-export const WorkoutSetContext = createContext<IWorkoutSetContext | null>(null);
+export const WorkoutRecordContext = createContext<IWorkoutRecordContext | null>(
+	null
+);
 
-export default function WorkoutSetProvider({
+export default function WorkoutRecordProvider({
 	children,
-}: WorkoutSetProviderProps) {
-	const [data, setData] = useState<WorkoutSet[]>(dados.sets);
+}: WorkoutRecordProviderProps) {
+	const [workoutRecord, setWorkoutRecord] = useState<WorkoutRecord | null>(
+		null
+	);
+	const [state, dispatch] = useReducer(workoutPageReducer, initialState);
+	const { exercises, progress, isPlayOn } = state;
 
 	return (
-		<WorkoutSetContext.Provider value={{ data, setData }}>
+		<WorkoutRecordContext.Provider
+			value={{
+				workoutRecord,
+				setWorkoutRecord,
+				exercises,
+				progress,
+				isPlayOn,
+				dispatch,
+			}}>
 			{children}
-		</WorkoutSetContext.Provider>
+		</WorkoutRecordContext.Provider>
 	);
 }

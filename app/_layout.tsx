@@ -4,7 +4,8 @@ import React from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { palette } from '../constants/Colors';
 import NavigationProvider from '../src/contexts/navigationContext';
-import WorkoutSetProvider from '../src/contexts/workoutSetContext';
+import WorkoutRecordProvider from '../src/contexts/workoutSetContext';
+import { UserProvider } from '../src/contexts/userContext';
 
 const defaultOptions: NativeStackNavigationOptions = {
 	headerStyle: { backgroundColor: `${palette.tomato.default}` },
@@ -17,15 +18,17 @@ const defaultOptions: NativeStackNavigationOptions = {
 export default function StackLayout() {
 	return (
 		<PaperProvider>
-			<WorkoutSetProvider>
-				<NavigationProvider>
-					<Stack>
-						<Stack.Screen name='workoutPage/index' options={defaultOptions} />
-						<Stack.Screen name='index' options={defaultOptions} />
-						<Stack.Screen name='home' options={defaultOptions} />
-					</Stack>
-				</NavigationProvider>
-			</WorkoutSetProvider>
+			<UserProvider>
+				<WorkoutRecordProvider>
+					<NavigationProvider>
+						<Stack>
+							<Stack.Screen name='workoutPage/index' options={defaultOptions} />
+							<Stack.Screen name='index' options={defaultOptions} />
+							<Stack.Screen name='home' options={defaultOptions} />
+						</Stack>
+					</NavigationProvider>
+				</WorkoutRecordProvider>
+			</UserProvider>
 		</PaperProvider>
 	);
 }

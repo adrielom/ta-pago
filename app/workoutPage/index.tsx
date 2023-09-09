@@ -1,50 +1,28 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useReducer, useState } from 'react';
-import { Dimensions, FlatList, Text, View } from 'react-native';
-import {
-	ActivityIndicator,
-	Divider,
-	ProgressBar,
-	Surface,
-} from 'react-native-paper';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
+import { FlatList, View } from 'react-native';
+import { ActivityIndicator, Divider } from 'react-native-paper';
 import ExerciseSetItem from '../../src/components/ExerciseSetItem';
-import RoundButton from '../../src/components/shared/roundButton';
-import { Workout } from '../../src/info/types';
+import ProgressHeader from '../../src/components/workoutPage/ProgressHeader';
+import { UserContext } from '../../src/contexts/userContext';
+import { WorkoutRecordContext } from '../../src/contexts/workoutSetContext';
+import { Workout, WorkoutRecord } from '../../src/info/types';
 import { initialState, workoutPageReducer } from './reducer';
-import { paramsStyles, styles } from './styles';
+import { styles } from './styles';
 import { WorkoutReducerSchema } from './types';
 
 const workoutPage = () => {
 	const params = useLocalSearchParams();
 	const { title, id, exercisesID } = params;
+
 	const [state, dispatch] = useReducer(workoutPageReducer, initialState);
 	const { exercises, progress, isPlayOn } = state;
 
-	const formattedProgress = () => {
-		return exercises.length > 0
-			? Math.ceil((progress / exercises.length) * 100)
-			: 0;
-	};
-
-	const renderEmoji = () => {
-		const prog = Math.ceil((progress / exercises.length) * 100);
-		switch (true) {
-			case prog >= 0 && prog <= 24:
-				return <Text>😒</Text>;
-			case prog >= 25 && prog <= 49:
-				return <Text>😏</Text>;
-			case prog >= 50 && prog <= 74:
-				return <Text>😊</Text>;
-			case prog >= 75 && prog <= 99:
-				return <Text>😀</Text>;
-			case prog >= 100:
-				return <Text>😁</Text>;
-			default:
-				break;
-		}
-	};
+	const { workoutRecord: data, setWorkoutRecord: setData } =
+		useContext(WorkoutRecordContext) ?? {};
+	const { user } = useContext(UserContext) ?? {};
 
 	const storeData = async (key: string, value: string) => {
 		try {
@@ -78,6 +56,15 @@ const workoutPage = () => {
 						});
 					});
 			});
+
+			if (!data && setData) {
+				setData({
+					workoutSetId: String(id),
+					startTime: state.startTime || Date(),
+					isComplete: false,
+					endTitme: null,
+				} as WorkoutRecord);
+			}
 		}
 	}, []);
 
@@ -98,67 +85,47 @@ const workoutPage = () => {
 		<>
 			<Stack.Screen options={{ title: String(title) }} />
 			<View style={styles.container}>
-				<Surface style={styles.header}>
-					<View
-						style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={styles.headerText}>Progresso do Treino</Text>
-						<Text style={styles.emoji}>{renderEmoji()}</Text>
-					</View>
-					<View style={styles.progressBarContainer}>
-						<ProgressBar
-							visible={true}
-							progress={exercises.length > 0 ? progress / exercises.length : 0}
-							style={
-								paramsStyles(Dimensions.get('window').width - 100).progress
-							}
-						/>
-						<Text>{formattedProgress()}%</Text>
-					</View>
-					<View style={styles.headerTop}>
-						<RoundButton
-							iconName='refresh'
-							onPress={() => {
-								setTrainingProgressTo(false);
-								dispatch({
-									type: 'saveProgress',
-									payload: { ...state, progress: 0 },
-								});
-							}}
-						/>
-						{!isPlayOn ? (
-							<RoundButton
-								iconName='play'
-								onPress={() => {
-									dispatch({
-										type: 'setIsPlayingOn',
-										payload: { ...state, isPlayOn: !isPlayOn },
-									});
-								}}
-							/>
-						) : (
-							<View
-								style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-								<RoundButton
-									iconName='pause'
-									onPress={() => {
-										dispatch({
-											type: 'setIsPlayingOn',
-											payload: { ...state, isPlayOn: !isPlayOn },
-										});
-									}}
-								/>
-								<Text>time</Text>
-							</View>
-						)}
-						<RoundButton
-							iconName='check-bold'
-							onPress={() => {
-								storeData('lastDone', JSON.stringify({ id: id }));
-								setTrainingProgressTo(true);
-							}}
-						/>
-					</View>
-				</Surface>
+				<ProgressHeader
+					onPressReset={() => {
+						setTrainingProgressTo(false);
+						dispatch({
+							type: 'saveProgress',
+							payload: { ...state, progress: 0 },
+						});
+					}}
+					onPressStart={() => {
+						dispatch({
+							type: 'setIsPlayingOn',
+							payload: {
+								...state,
+								isPlayOn: !isPlayOn,
+								startTime: state.startTime || new Date(),
+							},
+						});
+					}}
+					onPressPause={() => {
+						dispatch({
+							type: 'setIsPlayingOn',
+							payload: { ...state, isPlayOn: !isPlayOn },
+						});
+					}}
+					onPressFinish={() => {
+						storeData('lastDone', JSON.stringify({ id: id }));
+						if (setData) {
+							const newData = {
+								userId: user?.uid,
+								workoutSetId: String(id),
+								startTime: state.startTime || new Date(),
+								isComplete: true,
+								endTitme: new Date(),
+							} as WorkoutRecord;
+							setData(newData);
+							firestore().collection('workout_records').add(newData);
+						}
+
+						setTrainingProgressTo(true);
+					}}
+				/>
 				<Divider style={styles.divider} />
 				<View
 					style={{

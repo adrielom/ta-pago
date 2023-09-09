@@ -3,6 +3,13 @@ export interface WorkoutSet {
     title: string,
     urlImage?: string,
     exercises: Array<string>,
+}
+
+export interface WorkoutRecord {
+    userId: string,
+    workoutSetId: string,
+    startTime: Date | null, 
+    endTitme: Date | null
     isComplete: boolean
 }
 
