@@ -1,0 +1,8 @@
+WorkoutApp:
+    ✔ Fix undefined - WorkoutPage @done(23-08-26 16:02)
+    ✔ Fix the total progress bar @done(23-08-26 17:11)
+    ✔ NaN on workout page total progress @done(23-08-26 17:11)
+    ☐ Make a context for the user  
+    ☐ Implement start / pause feature
+        ☐ save it to the database
+    ☐ Fix save progress

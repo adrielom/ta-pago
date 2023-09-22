@@ -1,7 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Image, Text, View } from 'react-native';
 import { IconButton, Surface } from 'react-native-paper';
-import { NavigationContext } from '../../contexts/navigationContext';
+import {
+	IWorkoutRecordContext,
+	WorkoutRecordContext,
+} from '../../contexts/workoutSetContext';
 import { Workout } from '../../info/types';
 import ProgressBarComponent from '../shared/progressBarComponent';
 import { styles } from './styles';
@@ -12,8 +15,10 @@ type ExerciseSetItemProps = {
 
 export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 	const [showPhoto, setShowPhoto] = useState(false);
-	const { navigationInfo, setNavigationInfo } =
-		useContext(NavigationContext) || {};
+
+	const { isPlayOn, dispatch, state, progress } = useContext(
+		WorkoutRecordContext
+	) as IWorkoutRecordContext;
 
 	const repsTextFormatted = () => {
 		return `
@@ -29,7 +34,16 @@ export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 		`;
 	};
 
-	const setComplete = () => {};
+	const setComplete = (id: string) => {
+		dispatch({
+			type: 'setExerciseSetDone',
+			payload: {
+				...state,
+				id,
+				progress: progress + 1,
+			},
+		});
+	};
 
 	return (
 		<Surface style={styles.surface}>
@@ -48,13 +62,15 @@ export default function ExerciseSetItem({ workout }: ExerciseSetItemProps) {
 					<Text style={styles.repsText}>{repsTextFormatted()}</Text>
 				</View>
 			</View>
-			<ProgressBarComponent
-				total={workout.sets}
-				inicialValue={workout.isComplete ? workout.sets : 0}
-				onComplete={() => {
-					setComplete();
-				}}
-			/>
+			{isPlayOn && (
+				<ProgressBarComponent
+					total={workout.sets}
+					inicialValue={workout.isComplete ? workout.sets : 0}
+					onComplete={() => {
+						setComplete(workout.id);
+					}}
+				/>
+			)}
 		</Surface>
 	);
 }

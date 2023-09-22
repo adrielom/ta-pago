@@ -31,9 +31,6 @@ export default function Login() {
 		setIsLoading(true);
 		auth()
 			.signInWithEmailAndPassword(loginData.email, loginData.password)
-			.then((res) => {
-				console.log(res);
-			})
 			.catch((err) => {
 				console.log(err);
 				Alert.alert('Problema com email e senha');

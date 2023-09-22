@@ -1,24 +1,26 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FlatList, View } from 'react-native';
 import { ActivityIndicator, Divider } from 'react-native-paper';
 import ExerciseSetItem from '../../src/components/ExerciseSetItem';
 import ProgressHeader from '../../src/components/workoutPage/ProgressHeader';
 import { UserContext } from '../../src/contexts/userContext';
-import { WorkoutRecordContext } from '../../src/contexts/workoutSetContext';
+import {
+	IWorkoutRecordContext,
+	WorkoutRecordContext,
+} from '../../src/contexts/workoutSetContext';
 import { Workout, WorkoutRecord } from '../../src/info/types';
-import { initialState, workoutPageReducer } from './reducer';
 import { styles } from './styles';
-import { WorkoutReducerSchema } from './types';
 
 const workoutPage = () => {
 	const params = useLocalSearchParams();
 	const { title, id, exercisesID } = params;
 
-	const [state, dispatch] = useReducer(workoutPageReducer, initialState);
-	const { exercises, progress, isPlayOn } = state;
+	const { exercises, progress, isPlayOn, state, dispatch } = useContext(
+		WorkoutRecordContext
+	) as IWorkoutRecordContext;
 
 	const { workoutRecord: data, setWorkoutRecord: setData } =
 		useContext(WorkoutRecordContext) ?? {};
@@ -47,12 +49,13 @@ const workoutPage = () => {
 						execs.push(data);
 					})
 					.finally(() => {
+						console.log('first');
 						dispatch({
 							type: 'saveExercises',
 							payload: {
 								...state,
 								exercises: execs,
-							} as WorkoutReducerSchema,
+							},
 						});
 					});
 			});
@@ -131,7 +134,7 @@ const workoutPage = () => {
 					style={{
 						marginTop: 5,
 					}}>
-					{exercises.length > 0 ? (
+					{exercises?.length > 0 ? (
 						<FlatList<Workout>
 							data={exercises}
 							contentContainerStyle={{ paddingBottom: 500 }}

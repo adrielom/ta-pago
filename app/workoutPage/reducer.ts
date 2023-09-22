@@ -1,20 +1,12 @@
-import { WorkoutReducerSchema } from "./types";
+import { Workout } from "../../src/info/types";
 
-export const initialState = {
-	exercises: [],
-	isPlayOn: false,
-	progress: 0,
-	startTime: null,
-	endTime: null
-} as WorkoutReducerSchema;
-
-
-export type WorkoutReducerSchemaTypes = 'saveExercises' | 'saveProgress' | 'setIsPlayingOn';
+export type WorkoutReducerSchemaTypes = 'saveExercises' | 'saveProgress' | 'setIsPlayingOn' | 'setExerciseSetDone';
 
 export const workoutPageReducer = (
-	state: WorkoutReducerSchema,
-	{ type, payload }: { type: WorkoutReducerSchemaTypes; payload: WorkoutReducerSchema }
+	state: any,
+	{ type, payload }: { type: WorkoutReducerSchemaTypes; payload: any }
 ) => {
+
 	switch (type) {
 		case 'saveExercises':
 			return {
@@ -30,8 +22,15 @@ export const workoutPageReducer = (
             return {
                 ...state,
                 isPlayOn : payload.isPlayOn,
-				startTime: payload.startTime || state.startTime	
+				startTime: payload.startTime || state.startTime,
             }
+		case 'setExerciseSetDone':
+			return {
+				...state,
+				exercisesDone: [...state.exercisesDone, state.exercises.filter((e: Workout) => e.id === payload.id)],
+				progress: payload.progress,
+				finishTime: payload.workoutTime
+			}
 		default:
 			return state;
 	}
