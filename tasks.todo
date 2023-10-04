@@ -2,7 +2,9 @@ WorkoutApp:
     ✔ Fix undefined - WorkoutPage @done(23-08-26 16:02)
     ✔ Fix the total progress bar @done(23-08-26 17:11)
     ✔ NaN on workout page total progress @done(23-08-26 17:11)
-    ☐ Make a context for the user  
-    ☐ Implement start / pause feature
-        ☐ save it to the database
+    ✔ Make a context for the user @done(23-10-04 17:59)
+    ✔ Implement start / pause feature @done(23-10-04 17:59)
+    ☐ Individual progress not saved on toggle the play/paused button
+    ☐ On app in background save progress
+    ☐ Display the current "in progress status"
     ☐ Fix save progress
