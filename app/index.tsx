@@ -7,5 +7,5 @@ import { UserContext } from '../src/contexts/userContext';
 export default function Main() {
 	const { user } = useContext(UserContext) ?? {};
 
-	return <>{user !== undefined ? <App /> : <Login />}</>;
+	return <>{user !== null ? <App /> : <Login />}</>;
 }

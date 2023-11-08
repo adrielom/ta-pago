@@ -20,7 +20,6 @@ const ProgressHeader = ({
 		WorkoutRecordContext
 	) as IWorkoutRecordContext;
 
-	const exercisesDone = state.exercisesDone;
 	useEffect(() => {
 		let timer: NodeJS.Timeout | undefined = undefined;
 		if (isPlayOn) {
@@ -143,7 +142,6 @@ const ProgressHeader = ({
 	);
 
 	function getProgress(): number {
-		console.log(' exec ', exercises?.length, ' prog ', progress);
 		return exercises?.length > 0 ? progress / exercises?.length : 0;
 	}
 };

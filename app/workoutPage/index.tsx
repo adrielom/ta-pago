@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React, { useContext, useEffect } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Button } from 'react-native';
 import { ActivityIndicator, Divider } from 'react-native-paper';
 import ExerciseSetItem from '../../src/components/ExerciseSetItem';
 import ProgressHeader from '../../src/components/workoutPage/ProgressHeader';
@@ -13,14 +13,19 @@ import {
 } from '../../src/contexts/workoutSetContext';
 import { Workout, WorkoutRecord } from '../../src/info/types';
 import { styles } from './styles';
+import {
+	getLocalStorageData,
+	removeLocalStorageData,
+	setLocalStorageData,
+} from '../../src/components/Services/localStorageService';
 
 const workoutPage = () => {
+	const CURRENT_IN_PROGRESS = 'currentInProgress';
 	const params = useLocalSearchParams();
 	const { title, id, exercisesID } = params;
 
-	const { exercises, progress, isPlayOn, state, dispatch } = useContext(
-		WorkoutRecordContext
-	) as IWorkoutRecordContext;
+	const { exercises, progress, isPlayOn, state, dispatch, setWorkoutRecord } =
+		useContext(WorkoutRecordContext) as IWorkoutRecordContext;
 
 	const { workoutRecord: data, setWorkoutRecord: setData } =
 		useContext(WorkoutRecordContext) ?? {};
@@ -34,7 +39,27 @@ const workoutPage = () => {
 		}
 	};
 
-	useEffect(() => {
+	const triggerNewExerciseRecord = async () => {
+		await getLocalStorageData((e: any) => {
+			if (e !== null || e !== undefined) {
+				console.log(e);
+				setWorkoutRecord(JSON.parse(e));
+				return;
+			}
+		}, CURRENT_IN_PROGRESS);
+		const record = {
+			endTitme: null,
+			startTime: new Date(),
+			isComplete: false,
+			userId: String(user?.uid),
+			workoutSetId: String(id),
+		} as WorkoutRecord;
+
+		firestore().collection('workout_records').add(record);
+		setLocalStorageData(CURRENT_IN_PROGRESS, record);
+	};
+
+	const fetchExercises = () => {
 		if (params) {
 			const exercisesIds: string[] = JSON.parse(exercisesID.toString());
 
@@ -49,7 +74,6 @@ const workoutPage = () => {
 						execs.push(data);
 					})
 					.finally(() => {
-						console.log('first');
 						dispatch({
 							type: 'saveExercises',
 							payload: {
@@ -69,6 +93,10 @@ const workoutPage = () => {
 				} as WorkoutRecord);
 			}
 		}
+	};
+
+	useEffect(() => {
+		fetchExercises();
 	}, []);
 
 	const setTrainingProgressTo = (condition: boolean) => {
@@ -84,6 +112,17 @@ const workoutPage = () => {
 		}
 	};
 
+	const fetchAllItems = async () => {
+		try {
+			const keys = await AsyncStorage.getAllKeys();
+			const items = await AsyncStorage.multiGet(keys);
+
+			return items;
+		} catch (error) {
+			console.log(error, 'problemo');
+		}
+	};
+
 	return (
 		<>
 			<Stack.Screen options={{ title: String(title) }} />
@@ -95,6 +134,8 @@ const workoutPage = () => {
 							type: 'saveProgress',
 							payload: { ...state, progress: 0 },
 						});
+						removeLocalStorageData(CURRENT_IN_PROGRESS);
+						console.log('deleted');
 					}}
 					onPressStart={() => {
 						dispatch({
@@ -105,6 +146,7 @@ const workoutPage = () => {
 								startTime: state.startTime || new Date(),
 							},
 						});
+						triggerNewExerciseRecord();
 					}}
 					onPressPause={() => {
 						dispatch({
@@ -113,7 +155,6 @@ const workoutPage = () => {
 						});
 					}}
 					onPressFinish={() => {
-						storeData('lastDone', JSON.stringify({ id: id }));
 						if (setData) {
 							const newData = {
 								userId: user?.uid,
@@ -129,6 +170,7 @@ const workoutPage = () => {
 						setTrainingProgressTo(true);
 					}}
 				/>
+				<Button onPress={() => console.log(fetchAllItems())} title='here' />
 				<Divider style={styles.divider} />
 				<View
 					style={{

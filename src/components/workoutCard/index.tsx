@@ -5,6 +5,7 @@ import { Avatar, Button, Card, IconButton, Text } from 'react-native-paper';
 import { Link } from 'expo-router';
 import { styles } from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getLocalStorageData } from '../Services/localStorageService';
 
 const WorkoutCard = ({ imgUrl, id, title, exercises }: WorkoutCardProps) => {
 	const [isLastDone, setIsLastDone] = useState(false);
@@ -14,19 +15,8 @@ const WorkoutCard = ({ imgUrl, id, title, exercises }: WorkoutCardProps) => {
 			if (e.id === id) {
 				setIsLastDone(true);
 			}
-		});
+		}, 'lastDone');
 	}, []);
-
-	const getLocalStorageData = async (callback: Function) => {
-		try {
-			const value = await AsyncStorage.getItem('lastDone');
-			if (value !== null) {
-				callback(JSON.parse(value));
-			}
-		} catch (e) {
-			// error reading value
-		}
-	};
 
 	return (
 		<Link
